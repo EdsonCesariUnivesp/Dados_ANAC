@@ -101,6 +101,25 @@ Para validar:
 curl http://127.0.0.1:8000/api/v1/health
 ```
 
+### Cloudflare Tunnel
+
+Crie um túnel remotamente gerenciado no painel da Cloudflare e configure o hostname
+público para o serviço `http://dashboard:8000`. Grave somente o token específico do
+túnel em `.secrets/cloudflare-tunnel-token`:
+
+```bash
+install -d -m 700 .secrets
+read -r -s -p "Token do túnel: " TUNNEL_TOKEN; echo
+printf '%s' "$TUNNEL_TOKEN" > .secrets/cloudflare-tunnel-token
+unset TUNNEL_TOKEN
+chmod 600 .secrets/cloudflare-tunnel-token
+docker compose up -d cloudflared
+```
+
+O token nunca deve ser colocado em `.env`, comandos versionados, issues ou logs. O
+container usa `--token-file`, não publica portas e alcança o dashboard apenas pela rede
+interna do Compose.
+
 ## Endpoints
 
 - `GET /api/v1/health`

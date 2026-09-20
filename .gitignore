@@ -1,5 +1,6 @@
 voos.csv
 .env
+.secrets/
 .venv/
 __pycache__/
 .pytest_cache/
