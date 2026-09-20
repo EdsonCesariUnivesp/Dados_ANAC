@@ -8,6 +8,10 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
+def _environment_flag(name: str, default: bool = False) -> bool:
+    return os.getenv(name, str(default)).lower() in {"1", "true", "yes", "on"}
+
+
 @dataclass(frozen=True)
 class Settings:
     app_name: str = "Dashboard da Malha Aérea Brasileira"
@@ -25,6 +29,10 @@ class Settings:
     )
     max_period_months: int = int(os.getenv("MAX_PERIOD_MONTHS", "120"))
     rate_limit_per_minute: int = int(os.getenv("RATE_LIMIT_PER_MINUTE", "120"))
+    serve_frontend: bool = _environment_flag("SERVE_FRONTEND")
+    frontend_dir: Path = Path(
+        os.getenv("FRONTEND_DIR", str(PROJECT_ROOT / "frontend" / "dist"))
+    ).resolve()
 
 
 settings = Settings()

@@ -75,8 +75,31 @@ Copie `.env.example` para `.env` apenas no ambiente local. Variáveis:
 | `ALLOWED_ORIGINS` | origens CORS separadas por vírgula |
 | `MAX_PERIOD_MONTHS` | maior intervalo permitido |
 | `RATE_LIMIT_PER_MINUTE` | limite por endereço cliente |
+| `SERVE_FRONTEND` | permite ao FastAPI servir o build do frontend |
+| `FRONTEND_DIR` | diretório do build estático |
 
 Nunca versione o arquivo `.env` ou chaves privadas.
+
+## Docker e VPS
+
+A imagem final executa somente Python/FastAPI. O Node é usado apenas no estágio de
+compilação do frontend e não permanece na imagem de produção.
+
+```bash
+docker compose build
+docker compose up -d
+docker compose ps
+```
+
+Por segurança, o Compose publica a aplicação somente em `127.0.0.1:8000`. Em uma
+VPS, coloque Nginx, Caddy ou outro proxy reverso com HTTPS na frente do container.
+O diretório `data_voo` é montado como volume somente leitura.
+
+Para validar:
+
+```bash
+curl http://127.0.0.1:8000/api/v1/health
+```
 
 ## Endpoints
 

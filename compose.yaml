@@ -1,0 +1,32 @@
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dados-anac-dashboard:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${APP_PORT:-8000}:8000"
+    environment:
+      APP_ENV: production
+      SERVE_FRONTEND: "true"
+      FRONTEND_DIR: /app/frontend/dist
+      ANAC_DATA_FILE: /app/data_voo/dados_completos.parquet
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-}
+      MAX_PERIOD_MONTHS: ${MAX_PERIOD_MONTHS:-120}
+      RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-120}
+    volumes:
+      - ./data_voo:/app/data_voo:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from backend.app.api.routes import router
 from backend.app.core.config import settings
@@ -25,7 +26,9 @@ app.add_middleware(
 )
 app.include_router(router)
 
-
-@app.get("/", include_in_schema=False)
-def root() -> dict[str, str]:
-    return {"name": settings.app_name, "api": "/api/v1"}
+if settings.serve_frontend and settings.frontend_dir.is_dir():
+    app.mount("/", StaticFiles(directory=settings.frontend_dir, html=True), name="frontend")
+else:
+    @app.get("/", include_in_schema=False)
+    def root() -> dict[str, str]:
+        return {"name": settings.app_name, "api": "/api/v1"}
