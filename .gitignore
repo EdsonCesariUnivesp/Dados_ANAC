@@ -11,3 +11,9 @@ frontend/dist/
 pytest-cache-files-*/
 coverage/
 .coverage
+
+venv/
+.venv/
+node_modules/
+__pycache__/
+*.pyc

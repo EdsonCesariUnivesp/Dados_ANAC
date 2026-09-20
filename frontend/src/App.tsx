@@ -87,6 +87,6 @@ export function App() {
       </section>
       <aside className="method"><strong>Como ler estes números</strong><p>Os dados representam serviços programados. Assentos previstos não são passageiros transportados, e a presença de uma etapa não comprova que o voo ocorreu.</p></aside>
     </main>
-    <footer>Fonte: Agência Nacional de Aviação Civil · Dados de programação SIROS</footer>
+    <footer>Fonte: Agência Nacional de Aviação Civil · Dados de programação SIROS, PI-IV Univesp 2026.</footer>
   </div>;
 }
