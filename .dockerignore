@@ -1,0 +1,16 @@
+.git
+.github
+.venv
+**/__pycache__
+**/.pytest_cache
+frontend/node_modules
+frontend/dist
+.env
+dados_api
+data_aerodromos
+data_aeroporto
+data_voo
+data
+main.ipynb
+*.png
+pytest-cache-files-*
